@@ -167,7 +167,7 @@ export function RoomCanvas({
                   top: desk.y * scale,
                   width: DESK * scale,
                   height: DESK * scale,
-                  fontSize: Math.max(13, 20 * scale),
+                  fontSize: Math.max(11, 15 * scale),
                 }}
                 onPointerDown={(event) => onPointerDown(event, desk)}
                 onPointerMove={onPointerMove}

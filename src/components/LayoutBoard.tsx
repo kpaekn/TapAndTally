@@ -118,9 +118,10 @@ export function LayoutBoard({ initial, students, mode, onModeChange, onChange, s
           checkpoint.current = structuredClone(presentRef.current)
         }}
         onDrag={(id, x, y) => {
+          const spot = clampDesk(x, y)
           history.replace({
             ...presentRef.current,
-            desks: presentRef.current.desks.map((desk) => (desk.id === id ? { ...desk, x, y } : desk)),
+            desks: presentRef.current.desks.map((desk) => (desk.id === id ? { ...desk, ...spot } : desk)),
           })
         }}
         onDragEnd={(id, x, y) => {
