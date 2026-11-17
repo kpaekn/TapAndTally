@@ -68,10 +68,11 @@ export function StudentSheet({ room, studentId, onClose, onCount, onToggle, onAb
           {room.behaviors.map((behavior) => {
             const value = behaviorValueOnDay(room.events, student.id, behavior, today)
             return (
-              <div key={behavior.id} className="sheet-row" style={{ background: behavior.color }}>
+              <div key={behavior.id} className="sheet-row">
                 <button
                   type="button"
                   className="sheet-main"
+                  style={{ background: behavior.color }}
                   onClick={() => (behavior.kind === "count" ? onCount(behavior.id, 1) : onToggle(behavior.id))}
                 >
                   <span className="sheet-emoji">{behavior.emoji}</span>

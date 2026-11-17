@@ -459,7 +459,7 @@ p { margin: 0; }
 }
 .sheet-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
 .sheet-rows { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; min-height: 0; }
-.sheet-row { display: flex; gap: 8px; align-items: center; border-radius: 16px; }
+.sheet-row { display: flex; gap: 8px; align-items: center; }
 .sheet-main {
   flex: 1;
   display: flex;
@@ -467,6 +467,7 @@ p { margin: 0; }
   gap: 10px;
   text-align: left;
   border: 0;
+  border-radius: 16px;
   background: transparent;
   padding: 12px;
 }
@@ -485,7 +486,6 @@ p { margin: 0; }
 .minus-btn {
   width: 64px;
   height: 64px;
-  margin-right: 8px;
   border-radius: 14px;
   border: 1px solid #eadfd2;
   background: white;
