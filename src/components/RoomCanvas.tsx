@@ -40,10 +40,29 @@ export function RoomCanvas({
   onHoldStudent,
 }: RoomCanvasProps) {
   const hostRef = useRef<HTMLDivElement>(null)
-  const [fit, setFit] = useState(1)
-  const scale = fit * zoom
+  const [hostSize, setHostSize] = useState({ width: 0, height: 0 })
+  const liveFit = variant === "live" && desks.length > 0
+  let minX = 0
+  let minY = 0
+  let boundsW = CANVAS_W
+  let boundsH = CANVAS_H
+  if (liveFit) {
+    minX = Math.min(...desks.map((desk) => desk.x))
+    minY = Math.min(...desks.map((desk) => desk.y))
+    boundsW = Math.max(...desks.map((desk) => desk.x)) + DESK - minX
+    boundsH = Math.max(...desks.map((desk) => desk.y)) + DESK - minY
+  }
+  const pad = liveFit ? 36 : 2
+  const availW = Math.max(1, hostSize.width - pad * 2)
+  const availH = Math.max(1, hostSize.height - pad * 2)
+  const fitted = hostSize.width > 0 ? Math.min(availW / boundsW, availH / boundsH) : 1
+  const scale = (fitted > 0.05 ? fitted : 1) * zoom
   const scaleRef = useRef(scale)
   scaleRef.current = scale
+  const originX = liveFit ? pad : 0
+  const originY = liveFit ? pad : 0
+  const width = liveFit ? boundsW * scale + pad * 2 : CANVAS_W * scale
+  const height = liveFit ? boundsH * scale + pad * 2 : CANVAS_H * scale
   const dragRef = useRef<{ id: string; px: number; py: number; x: number; y: number } | null>(null)
   const holdRef = useRef<number | null>(null)
   const holdFired = useRef(false)
@@ -52,10 +71,7 @@ export function RoomCanvas({
   useEffect(() => {
     const host = hostRef.current
     if (!host) return
-    const measure = () => {
-      const next = Math.min((host.clientWidth - 4) / CANVAS_W, (host.clientHeight - 4) / CANVAS_H)
-      setFit(next > 0.05 ? next : 1)
-    }
+    const measure = () => setHostSize({ width: host.clientWidth, height: host.clientHeight })
     measure()
     const observer = new ResizeObserver(measure)
     observer.observe(host)
@@ -130,8 +146,6 @@ export function RoomCanvas({
     if (student && !holdFired.current) onActivate?.(student.id)
   }
 
-  const width = CANVAS_W * scale
-  const height = CANVAS_H * scale
   const dot = SNAP * scale
 
   return (
@@ -165,8 +179,8 @@ export function RoomCanvas({
                 key={desk.id}
                 className="desk-slot"
                 style={{
-                  left: desk.x * scale,
-                  top: desk.y * scale,
+                  left: originX + (desk.x - minX) * scale,
+                  top: originY + (desk.y - minY) * scale,
                   width: DESK * scale,
                   height: DESK * scale,
                 }}
