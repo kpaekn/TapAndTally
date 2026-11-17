@@ -81,7 +81,7 @@ export function StudentSheet({ room, studentId, onClose, onCount, onToggle, onAb
                   </span>
                   <span className="sheet-pill">{behavior.kind === "count" ? value : value ? "On" : "Off"}</span>
                 </button>
-                {behavior.kind === "count" ? (
+                {behavior.kind === "count" && value > 0 ? (
                   <button type="button" className="minus-btn" onClick={() => onCount(behavior.id, -1)} aria-label={`Remove one ${behavior.name}`}>
                     −1
                   </button>
