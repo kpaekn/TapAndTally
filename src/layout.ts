@@ -163,15 +163,26 @@ export function autoAssign(desks: Desk[], students: Student[]): Record<string, s
   return seats
 }
 
-export function shuffleAssign(desks: Desk[], students: Student[]): Record<string, string> {
-  const list = students.filter((student) => !student.removed)
+function shuffle<T>(items: T[]): T[] {
+  const list = [...items]
   for (let i = list.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     const swap = list[i]
     list[i] = list[j]
     list[j] = swap
   }
-  return autoAssign(desks, list)
+  return list
+}
+
+export function shuffleAssign(desks: Desk[], students: Student[]): Record<string, string> {
+  const list = shuffle(students.filter((student) => !student.removed))
+  const spots = shuffle(desks)
+  const seats: Record<string, string> = {}
+  list.forEach((student, index) => {
+    const desk = spots[index]
+    if (desk) seats[desk.id] = student.id
+  })
+  return seats
 }
 
 export function addDesk(desks: Desk[]): Desk[] {
