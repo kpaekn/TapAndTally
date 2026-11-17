@@ -360,6 +360,11 @@ p { margin: 0; }
   overflow: visible;
 }
 .desk.mode-seats, .desk.mode-live { background: white; border-color: #e7d7c4; border-radius: 10px; box-shadow: 0 8px 18px rgba(70, 42, 18, 0.05); }
+.desk:not(.is-filled) {
+  background: #f4e7d6;
+  border: 1.5px dashed #c4a27c;
+  box-shadow: none;
+}
 .desk.is-selected, .desk.is-picked { outline: 3px solid var(--terra); }
 .desk.is-absent { opacity: 0.55; }
 .desk.is-holding { outline: 3px solid var(--terra); }
