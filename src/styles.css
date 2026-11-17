@@ -124,6 +124,8 @@ p { margin: 0; }
 .side-nav { margin-top: auto; }
 .side-nav svg { width: 18px; height: 18px; }
 .side-nav button:disabled, .start-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.data-transfer { display: flex; flex-wrap: wrap; gap: 8px 14px; padding: 8px 8px 0; }
+.data-error { width: 100%; color: var(--terra-dark); font-size: 13px; }
 .new-class { align-self: flex-start; margin: 4px 8px 16px; color: var(--muted); }
 .main { flex: 1; min-width: 0; padding: 28px 32px 48px; }
 

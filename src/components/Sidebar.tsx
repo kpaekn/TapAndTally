@@ -1,4 +1,5 @@
 import type { ClassRoom } from "../types.ts"
+import { DataTransfer } from "./DataTransfer.tsx"
 
 interface SidebarProps {
   classes: ClassRoom[]
@@ -62,6 +63,7 @@ export function Sidebar({
           <ChartIcon /> Reports
         </button>
       </nav>
+      <DataTransfer />
     </aside>
   )
 }

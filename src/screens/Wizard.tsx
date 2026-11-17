@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react"
 import type { ReactNode } from "react"
 import { BehaviorEditor } from "../components/BehaviorEditor.tsx"
+import { DataTransfer } from "../components/DataTransfer.tsx"
 import { LayoutBoard } from "../components/LayoutBoard.tsx"
 import { starterBehaviors } from "../defaults.ts"
 import { uid } from "../id.ts"
@@ -96,6 +97,7 @@ export function Wizard({ onDone, onCancel }: { onDone: () => void; onCancel: (()
           </button>
         </header>
         <p className="bleed-note">Drag a desk into place. Add or remove desks until the room looks right.</p>
+        <DataTransfer onImported={onDone} />
         <LayoutBoard initial={{ desks: draft.desks, seats: draft.seats }} students={draft.students} mode="move" onChange={onLayout} />
       </section>
     )
@@ -116,6 +118,7 @@ export function Wizard({ onDone, onCancel }: { onDone: () => void; onCancel: (()
             Next
           </button>
         </header>
+        <DataTransfer onImported={onDone} />
         <LayoutBoard initial={{ desks: draft.desks, seats: draft.seats }} students={draft.students} mode="seats" onChange={onLayout} />
       </section>
     )
@@ -123,6 +126,7 @@ export function Wizard({ onDone, onCancel }: { onDone: () => void; onCancel: (()
 
   return (
     <section className="wizard">
+      <DataTransfer onImported={onDone} />
       <p className="kicker">Step {step + 1} · {STEPS[step]}</p>
       {step === 0 ? (
         <RosterStep

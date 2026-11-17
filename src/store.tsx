@@ -20,6 +20,7 @@ interface Store {
   bumpCount: (classId: string, studentId: string, behaviorId: string, delta: 1 | -1) => void
   flipToggle: (classId: string, studentId: string, behaviorId: string) => void
   toggleAbsent: (classId: string, studentId: string) => void
+  replaceData: (next: AppData) => void
 }
 
 const StoreContext = createContext<Store | null>(null)
@@ -156,6 +157,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     )
   }, [])
 
+  const replaceData = useCallback((next: AppData) => {
+    setData(next)
+  }, [])
+
   const value = useMemo<Store>(
     () => ({
       data,
@@ -172,6 +177,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       bumpCount,
       flipToggle,
       toggleAbsent,
+      replaceData,
     }),
     [
       data,
@@ -188,6 +194,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       bumpCount,
       flipToggle,
       toggleAbsent,
+      replaceData,
     ],
   )
 
