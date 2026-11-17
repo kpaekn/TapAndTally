@@ -430,12 +430,50 @@ p { margin: 0; }
 
 .live { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 .live-bar {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 44px 1fr auto;
   align-items: center;
   padding: 16px 20px;
 }
-.live-bar h1 { text-align: center; font-size: 32px; }
+.live-class { position: relative; justify-self: center; }
+.live-class-btn {
+  border: 0;
+  background: transparent;
+  font-family: var(--serif);
+  font-weight: 560;
+  font-size: 32px;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.live-chevron { width: 18px; height: 18px; }
+.live-class-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 220px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 8px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 4px;
+}
+.live-class-menu button {
+  border: 0;
+  background: transparent;
+  border-radius: 12px;
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 16px;
+}
+.live-class-menu button.is-current { background: #f6e4d4; }
 .live-bar p { color: var(--muted); }
 .empty-live { margin: auto; text-align: center; display: grid; gap: 12px; justify-items: center; }
 .sheet-backdrop {
