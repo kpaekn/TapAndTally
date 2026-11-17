@@ -13,6 +13,7 @@ interface RoomCanvasProps {
   selectedDeskId?: string | null
   pickedStudentId?: string | null
   absentStudentIds?: string[]
+  pointTotals?: Record<string, number>
   onDeskClick?: (deskId: string) => void
   onDragStart?: (deskId: string) => void
   onDrag?: (deskId: string, x: number, y: number) => void
@@ -30,6 +31,7 @@ export function RoomCanvas({
   selectedDeskId,
   pickedStudentId,
   absentStudentIds = [],
+  pointTotals = {},
   onDeskClick,
   onDragStart,
   onDrag,
@@ -148,7 +150,7 @@ export function RoomCanvas({
             const absent = student ? absentStudentIds.includes(student.id) : false
             const classes = [
               "desk",
-              variant,
+              `mode-${variant}`,
               selectedDeskId === desk.id ? "is-selected" : "",
               student && pickedStudentId === student.id ? "is-picked" : "",
               absent ? "is-absent" : "",
@@ -157,30 +159,36 @@ export function RoomCanvas({
             ]
               .filter(Boolean)
               .join(" ")
+            const count = student ? (pointTotals[student.id] ?? 0) : 0
             return (
-              <button
+              <div
                 key={desk.id}
-                type="button"
-                className={classes}
+                className="desk-slot"
                 style={{
                   left: desk.x * scale,
                   top: desk.y * scale,
                   width: DESK * scale,
                   height: DESK * scale,
-                  fontSize: Math.max(11, 15 * scale),
                 }}
-                onPointerDown={(event) => onPointerDown(event, desk)}
-                onPointerMove={onPointerMove}
-                onPointerUp={() => onPointerUp(desk)}
-                onPointerCancel={() => {
-                  dragRef.current = null
-                  clearHold()
-                }}
-                onContextMenu={(event) => event.preventDefault()}
               >
-                {student ? initials(student.name) : ""}
-                {absent ? <span className="desk-absent">Absent</span> : null}
-              </button>
+                <button
+                  type="button"
+                  className={classes}
+                  style={{ fontSize: Math.max(11, 15 * scale) }}
+                  onPointerDown={(event) => onPointerDown(event, desk)}
+                  onPointerMove={onPointerMove}
+                  onPointerUp={() => onPointerUp(desk)}
+                  onPointerCancel={() => {
+                    dragRef.current = null
+                    clearHold()
+                  }}
+                  onContextMenu={(event) => event.preventDefault()}
+                >
+                  {student ? initials(student.name) : ""}
+                  {absent ? <span className="desk-absent">Absent</span> : null}
+                </button>
+                {variant === "live" && count > 0 ? <span className="desk-bubble">{count}</span> : null}
+              </div>
             )
           })}
         </div>

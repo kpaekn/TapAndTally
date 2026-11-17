@@ -341,8 +341,10 @@ p { margin: 0; }
 .canvas-frame { min-width: 100%; min-height: 100%; display: flex; align-items: center; justify-content: center; }
 .canvas { position: relative; }
 .canvas.dotted { background-image: radial-gradient(rgba(120, 86, 48, 0.35) 1.1px, transparent 1.2px); }
+.desk-slot { position: absolute; }
 .desk {
   position: absolute;
+  inset: 0;
   border-radius: 8px;
   border: 1px solid #e4c8a4;
   background: #f3ddc4;
@@ -355,12 +357,34 @@ p { margin: 0; }
   touch-action: none;
   user-select: none;
   padding: 0;
+  overflow: visible;
 }
-.desk.seats, .desk.live { background: white; border-color: #e7d7c4; border-radius: 10px; box-shadow: 0 8px 18px rgba(70, 42, 18, 0.05); }
+.desk.mode-seats, .desk.mode-live { background: white; border-color: #e7d7c4; border-radius: 10px; box-shadow: 0 8px 18px rgba(70, 42, 18, 0.05); }
 .desk.is-selected, .desk.is-picked { outline: 3px solid var(--terra); }
 .desk.is-absent { opacity: 0.55; }
 .desk.is-holding { outline: 3px solid var(--terra); }
 .desk-absent { font-size: 10px; font-weight: 650; letter-spacing: 0.04em; text-transform: uppercase; color: var(--terra); }
+.desk-bubble {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  box-sizing: border-box;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--terra);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(80, 36, 16, 0.25);
+  pointer-events: none;
+  z-index: 1;
+}
 .layout-toolbar, .shape-reset {
   position: absolute;
   left: 50%;

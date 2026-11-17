@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { RoomCanvas } from "../components/RoomCanvas.tsx"
 import { StudentSheet } from "../components/StudentSheet.tsx"
-import { isAbsent, todayISO } from "../model.ts"
+import { isAbsent, behaviorValueOnDay, todayISO } from "../model.ts"
 import { useStore } from "../store.tsx"
 
 export function LiveRoom({ onClose }: { onClose: () => void }) {
@@ -22,6 +22,15 @@ export function LiveRoom({ onClose }: { onClose: () => void }) {
   const absentStudentIds = room.students
     .filter((student) => !student.removed && isAbsent(room.events, student.id, today))
     .map((student) => student.id)
+  const pointTotals: Record<string, number> = {}
+  for (const student of room.students) {
+    if (student.removed) continue
+    const total = room.behaviors.reduce((sum, behavior) => {
+      if (behavior.kind !== "count") return sum
+      return sum + behaviorValueOnDay(room.events, student.id, behavior, today)
+    }, 0)
+    if (total > 0) pointTotals[student.id] = total
+  }
   const seated = Object.values(room.seats).length
 
   return (
@@ -47,6 +56,7 @@ export function LiveRoom({ onClose }: { onClose: () => void }) {
           students={room.students}
           variant="live"
           absentStudentIds={absentStudentIds}
+          pointTotals={pointTotals}
           onActivate={setOpenId}
           onHoldStudent={(studentId) => toggleAbsent(room.id, studentId)}
         />
