@@ -1,19 +1,25 @@
 import { useEffect, useRef, useState } from "react"
 import { RoomCanvas } from "../components/RoomCanvas.tsx"
 import { StudentSheet } from "../components/StudentSheet.tsx"
-import { isAbsent, behaviorValueOnDay, todayISO } from "../model.ts"
+import { isAbsent, behaviorValueOnDay, sortClasses, todayISO } from "../model.ts"
+import { LayoutEditor } from "./LayoutEditor.tsx"
 import { useStore } from "../store.tsx"
 
 export function LiveRoom({ onClose }: { onClose: () => void }) {
   const { data, active, setActive, bumpCount, flipToggle, toggleAbsent } = useStore()
   const [openId, setOpenId] = useState<string | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [editing, setEditing] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const room = active
 
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
       if (event.key !== "Escape") return
+      if (editing) {
+        setEditing(false)
+        return
+      }
       if (menuOpen) {
         setMenuOpen(false)
         return
@@ -22,7 +28,7 @@ export function LiveRoom({ onClose }: { onClose: () => void }) {
     }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
-  }, [onClose, openId, menuOpen])
+  }, [onClose, openId, menuOpen, editing])
 
   useEffect(() => {
     if (!menuOpen) return
@@ -55,6 +61,14 @@ export function LiveRoom({ onClose }: { onClose: () => void }) {
     setMenuOpen(false)
   }
 
+  function openLayout() {
+    setOpenId(null)
+    setMenuOpen(false)
+    setEditing(true)
+  }
+
+  if (editing) return <LayoutEditor onClose={() => setEditing(false)} />
+
   return (
     <section className="live">
       <header className="live-bar">
@@ -74,7 +88,7 @@ export function LiveRoom({ onClose }: { onClose: () => void }) {
           </button>
           {menuOpen ? (
             <div className="live-class-menu" role="listbox" aria-label="Classes">
-              {data.classes.map((item) => (
+              {sortClasses(data.classes).map((item) => (
                 <button
                   key={item.id}
                   type="button"
@@ -89,13 +103,18 @@ export function LiveRoom({ onClose }: { onClose: () => void }) {
             </div>
           ) : null}
         </div>
-        <p>Tap to track · Hold to mark absent</p>
+        <div className="live-actions">
+          <button type="button" className="btn btn-line" onClick={openLayout}>
+            Room layout
+          </button>
+          <p>Tap to track · Hold to mark absent</p>
+        </div>
       </header>
       {room.desks.length === 0 || seated === 0 ? (
         <div className="empty-live">
           <p>This room has no one in a seat yet.</p>
-          <button type="button" className="btn btn-primary" onClick={onClose}>
-            Back to class
+          <button type="button" className="btn btn-primary" onClick={openLayout}>
+            Room layout
           </button>
         </div>
       ) : (

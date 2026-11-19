@@ -49,6 +49,12 @@ export function activeStudents(students: Student[]): Student[] {
   return students.filter((student) => !student.removed)
 }
 
+export function sortClasses(classes: ClassRoom[]): ClassRoom[] {
+  return [...classes].sort((a, b) =>
+    a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: "base" }),
+  )
+}
+
 export function countOn(events: TallyEvent[], studentId: string, behaviorId: string, date: string): number {
   return events.reduce((sum, event) => {
     if (event.type !== "count" || event.studentId !== studentId || event.behaviorId !== behaviorId || event.date !== date) {

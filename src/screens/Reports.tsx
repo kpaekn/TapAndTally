@@ -11,6 +11,7 @@ import {
   isAbsent,
   rangeBounds,
   reportStudents,
+  sortClasses,
   summaryCsv,
 } from "../model.ts"
 import type { RangeKey } from "../model.ts"
@@ -56,7 +57,7 @@ export function Reports() {
         <label>
           Class
           <select value={current.id} onChange={(event) => setActive(event.target.value)}>
-            {data.classes.map((item) => (
+            {sortClasses(data.classes).map((item) => (
               <option key={item.id} value={item.id}>
                 {item.name}
               </option>

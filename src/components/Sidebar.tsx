@@ -1,14 +1,14 @@
+import { sortClasses } from "../model.ts"
 import type { ClassRoom } from "../types.ts"
 import { DataTransfer } from "./DataTransfer.tsx"
 
 interface SidebarProps {
   classes: ClassRoom[]
   activeId: string | null
-  screen: "home" | "reports" | "menu" | "wizard" | "live" | "layout"
+  screen: "home" | "reports" | "menu" | "wizard" | "live"
   onPickClass: (id: string) => void
   onNewClass: () => void
   onStart: () => void
-  onLayout: () => void
   onMenu: () => void
   onReports: () => void
   onHome: () => void
@@ -21,7 +21,6 @@ export function Sidebar({
   onPickClass,
   onNewClass,
   onStart,
-  onLayout,
   onMenu,
   onReports,
   onHome,
@@ -38,7 +37,7 @@ export function Sidebar({
       </button>
       <p className="nav-label">Classes</p>
       <div className="class-list">
-        {classes.map((room) => (
+        {sortClasses(classes).map((room) => (
           <button
             key={room.id}
             type="button"
@@ -53,9 +52,6 @@ export function Sidebar({
         + New class
       </button>
       <nav className="side-nav">
-        <button type="button" className={screen === "layout" ? "is-active" : ""} disabled={disabled} onClick={onLayout}>
-          <HomeIcon /> Room layout
-        </button>
         <button type="button" className={screen === "menu" ? "is-active" : ""} disabled={disabled} onClick={onMenu}>
           <MenuIcon /> Menu
         </button>
@@ -81,14 +77,6 @@ function PlayIcon() {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" className="play-icon">
       <path d="M4.5 2.8v10.4L13 8 4.5 2.8z" fill="currentColor" />
-    </svg>
-  )
-}
-
-function HomeIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M4 11.2 12 4l8 7.2V20a1 1 0 0 1-1 1h-5.2v-6.2H10.2V21H5a1 1 0 0 1-1-1v-8.8z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
     </svg>
   )
 }

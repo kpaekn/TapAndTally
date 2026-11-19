@@ -479,7 +479,8 @@ p { margin: 0; }
   font-size: 16px;
 }
 .live-class-menu button.is-current { background: #f6e4d4; }
-.live-bar p { color: var(--muted); }
+.live-actions { display: flex; align-items: center; gap: 16px; }
+.live-bar p { color: var(--muted); margin: 0; }
 .empty-live { margin: auto; text-align: center; display: grid; gap: 12px; justify-items: center; }
 .sheet-backdrop {
   position: fixed;
